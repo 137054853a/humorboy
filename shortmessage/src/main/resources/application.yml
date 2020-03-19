@@ -1,0 +1,21 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 11521
+debug: false
+sms:
+  appid: 1400175827
+  appkey: 83ac8c9641d75f3dc6a7a27e9cd33110
+  smsSign: 中文
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+logging:
+  config: classpath:log4j2.yml
+management:
+  endpoint:
+    web:
+      base-path=/info
