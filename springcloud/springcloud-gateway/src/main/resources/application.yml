@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+server:
+  port: 8888
+nacos:
+  address: 192.168.3.14:8848
+  data-id: gateway
+  group-id: zshq
+  timeout: 2000
