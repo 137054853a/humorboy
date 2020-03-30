@@ -92,7 +92,6 @@ public class ExcelUtils {
                     list.add(column.value());
                 }
             }
-
         }
         return list;
     }
@@ -101,7 +100,6 @@ public class ExcelUtils {
      * 获取对象上字段的值
      * @param f
      * @param t
-     * @param <T>
      * @return
      * @throws Exception
      */
