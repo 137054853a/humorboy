@@ -1,10 +1,12 @@
-#### 练习demo展示<br>
-* text文档(小说)章节重排序
-* excel导出工具类
+练习demo展示<br>
+-
+目录
+* [text文档(小说)章节重排序]
+* [excel导出工具类](#使用说明)
 > 使用说明：在导出类的字段上加上@Column 注解，该注解标注了该字段为导出的数据表头，注解value为表头值
 
 Column.java
-```java 
+```java
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
@@ -31,7 +33,7 @@ public class ExcelInfo {
 ```
 
 ExcelUtils.java
-```java 
+```java
     public class ExcelUtils {
         private static HashMap<String, Integer> map = new HashMap<String, Integer>();//设置表头字段的位置，确定对象值该写到正确的单元格中
         private ExcelUtils(){}
