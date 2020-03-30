@@ -1,4 +1,4 @@
-springboot2.x微服务实现
+springcloud2.x微服务实现
 -
 * 模块说明<br>
 springcloud-dependencies<br>
