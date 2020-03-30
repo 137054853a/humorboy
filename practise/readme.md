@@ -2,27 +2,42 @@
 * text文档(小说)章节重排序
 * excel导出工具类
 > 使用说明：在导出类的字段上加上@Column 注解，该注解标注了该字段为导出的数据表头，注解value为表头值
+
 Column.java
 ```java 
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     public @interface Column {
-    
         String value() default "";
     }
 ```
+ExcelInfo.java
+```java
+@Data
+public class ExcelInfo {
+    @Column("表头字段1")
+    private String field1;
+    @Column("表头字段1")
+    private String field11;
+    @Column("表头字段1")
+    private String field12;
+    @Column("表头字段1")
+    private String field13;
+    @Column("表头字段1")
+    private String field14;
+}
+
+```
+
 ExcelUtils.java
 ```java 
     public class ExcelUtils {
         private static HashMap<String, Integer> map = new HashMap<String, Integer>();//设置表头字段的位置，确定对象值该写到正确的单元格中
-    
         private ExcelUtils(){}
-    
         public static ExcelUtils getInstance(){
             return new ExcelUtils();
         }
-    
         public <T> void  importExcel(List<T> t) throws Exception {
             Workbook workbook = new XSSFWorkbook();
             Sheet sheet = workbook.createSheet();
@@ -43,7 +58,6 @@ ExcelUtils.java
             }
             writeFile(workbook);
         }
-    
         /**
          * 循环设置行数据
          * @param r 行
