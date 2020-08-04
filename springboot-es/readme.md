@@ -1,0 +1,2 @@
+# springboot整合es
+ElasticsearchRepository方式整合完成,测试数据插入成功,速度较慢,查找优化方案
