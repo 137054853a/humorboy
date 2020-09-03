@@ -9,4 +9,6 @@ public interface UserInfoRepository extends ElasticsearchRepository<UserInfo, St
 
     UserInfo findByName(String name);
     List<UserInfo> findByFromArea(String area);
+
+    List<UserInfo> queryByNameIsLike(String name);
 }

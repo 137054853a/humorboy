@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ResponseBean {
     @Builder.Default
     private int code = 200;
-    private String msg;
+    @Builder.Default
+    private String msg = "操作成功";
     private Object data;
 }

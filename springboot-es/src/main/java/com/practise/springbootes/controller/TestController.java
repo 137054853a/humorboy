@@ -6,6 +6,8 @@ import com.practise.springbootes.repository.UserInfoRepository;
 import com.practise.springbootes.utils.IdWorker;
 import com.practise.springbootes.vo.ResponseBean;
 import com.practise.springbootes.vo.UserInfo;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -15,6 +17,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.PrefixQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -29,10 +32,10 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortMode;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -42,6 +45,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
+@Slf4j
 public class TestController {
 
     @Autowired
@@ -113,7 +117,7 @@ public class TestController {
 
     @GetMapping(value = "/init")
     public ResponseBean init() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             userInfoRepository.save(UserInfo.builder()
                     .id(idWorker.nextId())
                     .name(i%3==0?"张三"+i:"露丝"+i)
@@ -123,5 +127,19 @@ public class TestController {
                     .build());
         }
         return  ResponseBean.builder().build();
+    }
+
+    @GetMapping(value = "/queryByName/{name}")
+    public ResponseBean queryByName(@NonNull @PathVariable String name) {
+        long s = System.currentTimeMillis();
+
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("name", name));
+        Query build = new NativeSearchQueryBuilder().withQuery(functionScoreQueryBuilder).build();
+        Page<UserInfo> search = userInfoRepository.search(build);
+
+
+        List<UserInfo> userInfos = userInfoRepository.queryByNameIsLike(name);
+        log.info("本次查询耗时:{}毫秒,查询数据条数:{}",System.currentTimeMillis() - s,userInfos.size());
+        return  ResponseBean.builder().data(userInfos).build();
     }
 }
